@@ -34,3 +34,38 @@
   background-color: var(--gray-2);
   min-inline-size: 20rem;
 }
+
+.controls {
+  position: absolute;
+  inset-block-end: 1rem;
+  inline-size: 100%;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.controls form {
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  max-inline-size: 80ch;
+  background-color: var(--gray-7);
+  flex-direction: column;
+  gap: 0.5rem;
+  accent-color: var(--gray-1);
+  color: var(--gray-1);
+}
+
+label {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.radio-elements {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}

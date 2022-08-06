@@ -16,8 +16,18 @@ export function App() {
   }
 
   return (
-    <div className="app" data-library-location={state.context.location}>
-      <main className="main">
+    <>
+      <div className="app" data-library-location={state.context.location}>
+        <main className="main">
+          <h1>Main Content</h1>
+        </main>
+        {state.matches("open") ? (
+          <aside className="library">
+            <h3>library</h3>
+          </aside>
+        ) : null}
+      </div>
+      <div className="controls">
         <form>
           <label htmlFor="visibility">
             <input
@@ -26,40 +36,37 @@ export function App() {
               checked={state.matches("open")}
               onChange={onChangeVisibility}
             />
-            <span>Show Library</span>
+            <span>Library is Visible</span>
           </label>
           <fieldset>
             <legend>Select Library Location:</legend>
-            <label htmlFor="left">
-              <input
-                type="radio"
-                id="left"
-                name="location"
-                value="left"
-                checked={state.context.location == "left"}
-                onChange={onInputChange}
-              />
-              <span>Left</span>
-            </label>
-            <label htmlFor="right">
-              <input
-                type="radio"
-                id="right"
-                name="location"
-                value="right"
-                checked={state.context.location == "right"}
-                onChange={onInputChange}
-              />
-              <span>right</span>
-            </label>
+            <div className="radio-elements">
+              <label htmlFor="left">
+                <input
+                  type="radio"
+                  id="left"
+                  name="location"
+                  value="left"
+                  checked={state.context.location == "left"}
+                  onChange={onInputChange}
+                />
+                <span>Left</span>
+              </label>
+              <label htmlFor="right">
+                <input
+                  type="radio"
+                  id="right"
+                  name="location"
+                  value="right"
+                  checked={state.context.location == "right"}
+                  onChange={onInputChange}
+                />
+                <span>right</span>
+              </label>
+            </div>
           </fieldset>
         </form>
-      </main>
-      {state.matches("open") ? (
-        <aside className="library">
-          <span>I'm the library!</span>
-        </aside>
-      ) : null}
-    </div>
+      </div>
+    </>
   );
 }
