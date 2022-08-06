@@ -1,34 +1,65 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useActor, useInterpret } from "@xstate/react";
+import { ChangeEvent, FormEvent, useState } from "react";
+import "./app.css";
+import { libraryMachine } from "./library-machine";
 
-function App() {
-  const [count, setCount] = useState(0)
+export function App() {
+  const libraryService = useInterpret(libraryMachine);
+  const [state] = useActor(libraryService);
+
+  function onInputChange(event: ChangeEvent<HTMLInputElement>) {
+    libraryService.send({ type: "CHANGE.LOCATION", value: event.target.value });
+  }
+
+  function onChangeVisibility() {
+    libraryService.send({ type: "TOGGLE" });
+  }
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <div className="app" data-library-location={state.context.location}>
+      <main className="main">
+        <form>
+          <label htmlFor="visibility">
+            <input
+              type="checkbox"
+              id="visibility"
+              checked={state.matches("open")}
+              onChange={onChangeVisibility}
+            />
+            <span>Show Library</span>
+          </label>
+          <fieldset>
+            <legend>Select Library Location:</legend>
+            <label htmlFor="left">
+              <input
+                type="radio"
+                id="left"
+                name="location"
+                value="left"
+                checked={state.context.location == "left"}
+                onChange={onInputChange}
+              />
+              <span>Left</span>
+            </label>
+            <label htmlFor="right">
+              <input
+                type="radio"
+                id="right"
+                name="location"
+                value="right"
+                checked={state.context.location == "right"}
+                onChange={onInputChange}
+              />
+              <span>right</span>
+            </label>
+          </fieldset>
+        </form>
+      </main>
+      {state.matches("open") ? (
+        <aside className="library">
+          <span>I'm the library!</span>
+        </aside>
+      ) : null}
     </div>
-  )
+  );
 }
-
-export default App
